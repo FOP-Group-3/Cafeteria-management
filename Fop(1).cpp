@@ -45,8 +45,6 @@ void Main_Menu() {//Display menu of the program
     cout<<"...... RESTAURANT........\n";
     cout<<"Enter 1 To order food\n";
     cout<<"Enter 2 Manage Ingredient\n";
-    cout<<"Enter 3 To compute profit\n";
-    cout<<"Enter 4 To display daily sales report\n";
 }
 void ingredient(float*bill) {// manage ingredients usage
     float p;
