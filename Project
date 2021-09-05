@@ -13,6 +13,10 @@ struct a{char soft_drinks;
         vector <float> price {6.95,5.75,7.25,8.95,4.95};
         vector <string> foods {"BuffaloWings", "HamBurger", "ItalianSandwich", "ShrimpNuggets", "VeggieSupreme"};
         a drinks;}foodMenu;
+        struct drink{
+         vector <float> money {3.45,6.00,40.25,8.95,4.75};
+        vector <string> drinks {"1L bottle water", "tea", "hot choclate", "soft drinks", "cofee"};
+        }drinkMenu;
 void choose();
 void addItems();
 void showMenu();
@@ -66,20 +70,30 @@ void showMenu(){
      for(int i=0;i<foodMenu.foods.size();i++){
      cout<<"\n       Item "<< i << " "<<foodMenu.foods[i]	<<"             "<<foodMenu.price[i]<<" <===\n"<<endl;
 }
-}
+for(int j=0;j<drinkMenu.drinks.size();j++){
+     cout<<"\n       press "<< j << " "<<drinkMenu.drinks[j]	<<"             "<<drinkMenu.money[j]<<" <===\n"<<endl;
+}}
 void addItems(){
     ADDITEMS:
-    string foodItem;
-    float itemPrice;
+    string foodItem,drinkItem;
+    float itemPrice, drinkPrice;
+
     cout<<endl;
     cout<<"         :::::::::::::::::::ADD ITEMS:::::::::::::::::::\n";
     cout<<"Please Enter the name of the food item you want to insert:\n";
     cin>>foodItem;
+    cout<<"Please Enter the name of the drink item you want to insert:\n";
+    cin>>drinkItem;
     cout<<"Please enter the price for the food item: "<<foodItem<< "\n";
     cin>>itemPrice;
     foodMenu.foods.push_back(foodItem);
     foodMenu.price.push_back(itemPrice);
-    cout<<"Successfully added one item to the menu!\n";
+    cout<<"Successfully added one food item to the menu!\n";
+    cout<<"Please enter the price for the drink item: "<<drinkItem<< "\n";
+    cin>>drinkPrice;
+    drinkMenu.drinks.push_back(drinkItem);
+    drinkMenu.money.push_back(drinkPrice);
+    cout<<"Successfully added your drink item to the menu!\n";
     char choice;
     cout<<"Do you want to add another item? y/n \n";
     cin>>choice;
@@ -110,6 +124,8 @@ case 1:
 case 2:
     foodMenu.foods.clear();
     foodMenu.price.clear();
+    drinkMenu.drinks.clear();
+    drinkMenu.money.clear();
     system("CLS");
     showMenu();
     showUserOption();
@@ -121,6 +137,7 @@ void deleteOneItem(){
     char choice;
     vector <int>::iterator item;
     //item = foodMenu.foods.begin();
+    vector <int>::iterator drink;
     system("CLS");
     showMenu();
     cout<<"Enter the index of the item you want to delete:\n";
@@ -295,9 +312,3 @@ cout<<"\n" << listOfOrderedFood.at(i) << ":\t"<<setw(6)<<left<< amountOfFood.at(
 showMenu();
 showUserOption();
 }
-
-
-
-
-
-
