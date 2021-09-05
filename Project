@@ -15,7 +15,7 @@ struct a{char soft_drinks;
         a drinks;}foodMenu;
         struct drink{
          vector <float> money {3.45,6.00,40.25,8.95,4.75};
-        vector <string> drinks {"1L bottle water", "tea", "hot choclate", "soft drinks", "cofee"};
+        vector <string> drinks {"1L bottle water", "tea", "hot chocolate", "soft drinks", "coffee"};
         }drinkMenu;
 void choose();
 void addItems();
@@ -77,9 +77,8 @@ void addItems(){
     ADDITEMS:
     string foodItem,drinkItem;
     float itemPrice, drinkPrice;
-
     cout<<endl;
-    cout<<"         :::::::::::::::::::ADD ITEMS:::::::::::::::::::\n";
+    cout<<":::::::::::::::::::ADD ITEMS:::::::::::::::::::\n";
     cout<<"Please Enter the name of the food item you want to insert:\n";
     cin>>foodItem;
     cout<<"Please Enter the name of the drink item you want to insert:\n";
@@ -97,8 +96,7 @@ void addItems(){
     char choice;
     cout<<"Do you want to add another item? y/n \n";
     cin>>choice;
-    if(choice =='Y' || choice =='y'){
-        goto ADDITEMS;
+    if(choice =='Y' || choice =='y'){       goto ADDITEMS;
     }
     else if(choice == 'N' || choice == 'n'){
         cout<<"Thank you, your items have been added.";
@@ -123,8 +121,8 @@ case 1:
 
 case 2:
     foodMenu.foods.clear();
-    foodMenu.price.clear();
     drinkMenu.drinks.clear();
+    foodMenu.price.clear();
     drinkMenu.money.clear();
     system("CLS");
     showMenu();
@@ -135,17 +133,21 @@ void deleteOneItem(){
     DELETEITEM:
     int index;
     char choice;
-    vector <int>::iterator item;
+    vector <int>::iterator item1;
     //item = foodMenu.foods.begin();
-    vector <int>::iterator drink;
+    vector <int>::iterator item2;
     system("CLS");
     showMenu();
     cout<<"Enter the index of the item you want to delete:\n";
     cin>>index;
     auto elementToRemove = foodMenu.foods.begin() + index;
+    auto itemsToRemove = drinkMenu.drinks.begin() + index;
     auto priceToRemove = foodMenu.price.begin() + index;
+    auto moneyToRemove = drinkMenu.money.begin() + index;
     foodMenu.foods.erase(elementToRemove);
     foodMenu.price.erase(priceToRemove);
+    drinkMenu.drinks.erase(itemsToRemove);
+    drinkMenu.money.erase(moneyToRemove);
     cout<<"Successfully deleted one item!\n";
     cout<<"Do you want to delete another item? y/n\n";
     cin>>choice;
@@ -168,7 +170,9 @@ void modifyItem(){
     char choice;
     int index;
     string foodItem;
+    string drinkItem;
     float price;
+    float money;
     cout<<endl;
     cout<<"         :::::::::::::::::::MODIFY ITEM(S):::::::::::::::::::\n";
 
@@ -178,8 +182,14 @@ void modifyItem(){
     cin>>foodItem;
     cout<<"Please enter the price for the food: "<<foodItem<< ": \n";
     cin>>price;
+    cout<<"Please enter the new drink name:\n";
+    cin>>drinkItem;
+    cout<<"Please enter the price for the drink: "<<drinkItem<< ": \n";
+    cin>>money;
     foodMenu.foods.at(index) = foodItem;
     foodMenu.price.at(index) = price;
+    drinkMenu.drinks.at(index) = drinkItem;
+    drinkMenu.money.at(index) = money;
     cout<<"Successfully modified one item. Do you want to modify other items? y/n \n";
     cin>>choice;
     if(choice =='Y' || choice =='y'){
@@ -199,7 +209,9 @@ void modifyItem(){
 }
 void searchItem(){
     string searchFood;
+    string searchDrink;
     int indexOfFood;
+    int indexOfDrink;
     //int index;
     SEARCHFORITEM:
     cout<<endl;
@@ -211,6 +223,13 @@ void searchItem(){
         char choice;
         indexOfFood = index - foodMenu.foods.begin();
         cout<<"Element found at index: "<<indexOfFood<< " with price: "<< foodMenu.price.at(indexOfFood)<<endl;
+        cout<<"Enter the drink you want to search for: \n";
+    cin>>searchDrink;
+    auto index = find(drinkMenu.drinks.begin(), drinkMenu.drinks.end(), searchDrink);
+    if(index != drinkMenu.drinks.end()){
+        char choice;
+        indexOfDrink = index - drinkMenu.drinks.begin();
+        cout<<"Element found at index: "<<indexOfDrink<< " with price: "<< drinkMenu.money.at(indexOfDrink)<<endl;
         cout<<"Do you want to search for another item? y/n\n";
         cin>>choice;
 
@@ -228,7 +247,7 @@ void searchItem(){
         else {
             cout<<"Invalid choice!";
             }
-    }
+    }}
     else
     {
         cout<<"Element not found!\n";
@@ -250,6 +269,8 @@ void sortItems()
     {
     sort(foodMenu.foods.begin(), foodMenu.foods.end());
     cout<<"Food menu successfully sorted in ascending order!";
+    sort(drinkMenu.drinks.begin(), drinkMenu.drinks.end());
+    cout<<"drink menu successfully sorted in ascending order!";
     showMenu();
     showUserOption();
 
@@ -258,6 +279,8 @@ void sortItems()
     {
     sort(foodMenu.foods.begin(), foodMenu.foods.end(), greater<string>());
     cout<<"Food menu successfully sorted in descending order!";
+    sort(drinkMenu.drinks.begin(), drinkMenu.drinks.end(), greater<string>());
+    cout<<"drink menu successfully sorted in descending order!";
     showMenu();
     showUserOption();
     }
@@ -266,30 +289,50 @@ void sortItems()
 }
 void choose(){
    menu food;
+   menu drink;
    int order;
+   int j;
    int foodAmount;
-   float amountOfSales;
+   int drinkAmount;
+   float amountOfSaleFood;
+   float amountOfSaleDrink;
+
    vector <string> listOfOrderedFood {};
    vector <float> listOfOrderedPrice {};
    vector <float> totalPrice {};
    vector <int> amountOfFood {};
+   vector <string> listOfOrderedDrink {};
+   vector <float> listOfOrderedMoney {};
+   vector <float> totalMoney {};
+   vector <int> amountOfDrink {};
    FOODCHOICE:
     char choice;
     cout<<"\nFrom The List Of Food Items, What Would You Like?:\n";
     cin>>order;
     cout<<"\nHow Many "<< foodMenu.foods[order] <<" would You Like To Order:\n";
     cin>>foodAmount;
-    amountOfSales = foodAmount * foodMenu.price[order];
+    amountOfSaleFood = foodAmount * foodMenu.price[order];
     amountOfFood.push_back(foodAmount);
     listOfOrderedPrice.push_back(foodMenu.price[order]);
     listOfOrderedFood.push_back(foodMenu.foods[order]);
-    totalPrice.push_back(amountOfSales);
+    totalPrice.push_back(amountOfSaleFood);
+    DRINKCHOICE:
+    cout<<"\nFrom The List Of drink Items, What Would You Like?:\n";
+    cin>>order;
+    cout<<"\nHow Many "<< drinkMenu.drinks[order] <<" would You Like To Order:\n";
+    cin>>drinkAmount;
+    amountOfSaleDrink = drinkAmount * drinkMenu.money[order];
+    amountOfDrink.push_back(drinkAmount);
+    listOfOrderedMoney.push_back(drinkMenu.money[order]);
+    listOfOrderedDrink.push_back(drinkMenu.drinks[order]);
+    totalMoney.push_back(amountOfSaleDrink);
     cout<<"Do you want another order? y/n\n";
     cin>>choice;
     switch(choice){
     case 'y':
     case 'Y':
         goto FOODCHOICE;
+        goto DRINKCHOICE;
         break;
 
     case 'N':
@@ -307,8 +350,17 @@ cout<<"===========================================================\n";
 cout<<left<<setw(15)<<"ITEM"<<right<<setw(11)<<"QUANTITY"<<right<<setw(15)<<"UNIT PRICE"<<right<<setw(20)<<"AMOUNT OF SALE\n";
 cout<<"===========================================================";
 for(int i=0;i<listOfOrderedFood.size();i++){
-cout<<"\n" << listOfOrderedFood.at(i) << ":\t"<<setw(6)<<left<< amountOfFood.at(i) <<setw(16)<<right<< listOfOrderedPrice.at(i)  <<setw(20) <<right<< totalPrice.at(i)<<endl;
+cout<<"\n" << listOfOrderedFood.at(i) << ":\t"<<setw(6)<<left<< amountOfFood.at(i) <<setw(16)<<right<< listOfOrderedFood .at(i)  <<setw(20) <<right<< totalPrice.at(i)<<endl;
+}
+for(int j=0;j<listOfOrderedDrink.size();j++){
+cout<<"\n" << listOfOrderedDrink.at(j) << ":\t"<<setw(6)<<left<< amountOfDrink.at(j) <<setw(16)<<right<< listOfOrderedMoney.at(j)  <<setw(20) <<right<< totalMoney.at(j)<<endl;
 }
 showMenu();
 showUserOption();
 }
+
+
+
+
+
+
